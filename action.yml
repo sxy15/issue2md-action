@@ -6,6 +6,11 @@ branding:
   color: 'green'
   icon: 'git-pull-request'
 
+workflow_call: 
+  secrets:
+    PRIVATE_KEY:
+      required: true
+
 inputs:
   branch:
     description: 'The branch to commit to'
