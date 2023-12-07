@@ -1,60 +1,40 @@
-name: issue2md
+name: 'issue2md'
 author: 'sxy15'
-description: 'Converts GitHub issues to markdown'
+description: 'issue2md'
 
-branding:
-  color: 'green'
-  icon: 'git-pull-request'
+on:
+  issues:
+    types: [opened, edited, closed, reopened]
+  issue_comment:
+    types: [created, edited, deleted]
 
-workflow_call: 
-  secrets:
-    PRIVATE_KEY:
-      required: true
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-inputs:
-  branch:
-    description: 'The branch to commit to'
-    required: true
-    default: 'main'
-  GITHUB_TOKEN:
-    description: "secrets.GITHUB_TOKEN"
-    required: true
-  created_at:
-    description: "github.event.issue.created_at"
-    required: true
-  title:
-    description: "github.event.issue.title"
-    required: true
-  actor:
-    description: "github.actor"
-    required: true
+      - name: Install jq
+        run: sudo apt-get install jq
 
-runs:
-  using: 'composite'
-  steps:
-    - name: install jq
-      run: sudo apt-get install jq
-      shell: bash
+      - name: Generate README
+        run: |
+          echo "# Issues" > readme.md
+          issues=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/issues)
+          for issue in $(echo "${issues}" | jq -r '.[] | @base64'); do
+            _jq() {
+              echo ${issue} | base64 --decode | jq -r ${1}
+            }
+            echo "- $(_jq '.title') (created at: $(_jq '.created_at'))" >> readme.md
+          done
 
-    - id: 'generate_md'
-      name: converts GitHub issues to markdown
-      shell: bash
-      run: |
-        echo "| Created At | Title |" > issues.md
-        echo "| ----------- | ----- |" >> issues.md
-        issues=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/issues)
-        for issue in $(echo "${issues}" | jq -r '.[] | @base64'); do
-          _jq() {
-            echo ${issue} | base64 --decode | jq -r ${1}
-          }
-          created_at=$(date -d"$(_jq '.created_at')" +%F)
-          echo "| ${created_at} | $(_jq '.title') |" >> issues.md
-        done
-
-    - id: 'push_changes'
-      name: push changes
-      uses: zyrouge/github-push-action@main
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ inputs.branch }}
-
+      - name: Push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add readme.md
+          git commit -m "Update README with issue info"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -15,6 +15,3 @@ jobs:
 
       - name: Test issue2md action
         uses: ./
-        with:
-          branch: 'main'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
