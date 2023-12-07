@@ -32,11 +32,11 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Install jq
+    - name: install jq
       run: sudo apt-get install jq
       shell: bash
 
-    - id: generate md
+    - id: 'generate_md'
       name: converts GitHub issues to markdown
       shell: bash
       run: |
@@ -51,7 +51,7 @@ runs:
           echo "| ${created_at} | $(_jq '.title') |" >> issues.md
         done
 
-    - id: push changes
+    - id: 'push_changes'
       name: push changes
       uses: zyrouge/github-push-action@main
       with:
