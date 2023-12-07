@@ -15,3 +15,5 @@ jobs:
 
       - name: Test issue2md action
         uses: ./
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
