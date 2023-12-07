@@ -26,7 +26,7 @@ jobs:
       - name: Generate README
         run: |
           echo "# Issues" > readme.md
-          issues=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/issues)
+          issues=$(curl -s -H "Authorization: token ${{ inputs.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/issues)
           for issue in $(echo "${issues}" | jq -r '.[] | @base64'); do
             _jq() {
               echo ${issue} | base64 --decode | jq -r ${1}
@@ -42,4 +42,4 @@ jobs:
           git commit -m "Update README with issue info"
           git push
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
