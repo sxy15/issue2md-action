@@ -32,10 +32,10 @@ function run() {
             return `| [${item.title}](${item.html_url}) | ${item.updated_at} |`;
         }).join('\n');
         const md = `# Issues
-                | title | updated_at |
-                | --- | --- |
-                ${table}
-                `;
+| title | updated_at |
+| --- | --- |
+${table}
+`;
         console.log(md);
     });
 }

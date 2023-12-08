@@ -18,10 +18,10 @@ async function run() {
     }).join('\n')
 
     const md = `# Issues
-                | title | updated_at |
-                | --- | --- |
-                ${table}
-                `
+| title | updated_at |
+| --- | --- |
+${table}
+`
     console.log(md)
 }
 
