@@ -9,37 +9,10 @@ on:
     types: [created, edited, deleted]
 
 inputs:
-  GITHUB_TOKEN:
+  token:
     description: 'GitHub token'
     required: true
 
-jobs:
-  generate:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install jq
-        run: sudo apt-get install jq
-
-      - name: Generate README
-        shell: bash
-        run: |
-          echo "# Issues" > readme.md
-          issues=$(curl -s -H "Authorization: token ${{ inputs.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/issues)
-          for issue in $(echo "${issues}" | jq -r '.[] | @base64'); do
-            _jq() {
-              echo ${issue} | base64 --decode | jq -r ${1}
-            }
-            echo "- $(_jq '.title') (created at: $(_jq '.created_at'))" >> readme.md
-          done
-
-      - name: Push changes
-        shell: bash
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add readme.md
-          git commit -m "Update README with issue info"
-          git push
+runs:
+  using: 'node20'
+  main: 'dist/index.mjs'

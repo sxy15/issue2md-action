@@ -1,0 +1,25 @@
+{
+  "name": "issue2md-action",
+  "version": "1.0.0",
+  "description": "issue2md-action",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npx unbuild"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "unbuild": "^2.0.0"
+  }
+}
