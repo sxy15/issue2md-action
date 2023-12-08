@@ -24,6 +24,6 @@ jobs:
         needs: build
         steps:
             - uses: actions/checkout@v3
-            - uses: '/action.yml'
+            - uses: /action.yml
               with:
                 token: ${{ secrets.GITHUB_TOKEN }}
