@@ -1,4 +1,5 @@
 import { getIssues } from './utils'
+import fs from 'node:fs'
 
 async function run() {
 
@@ -22,7 +23,7 @@ async function run() {
 | --- | --- |
 ${table}
 `
-    console.log(md)
+    fs.writeFileSync('README.md', md)
 }
 
 

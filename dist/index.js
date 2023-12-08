@@ -15,8 +15,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const utils_1 = __nccwpck_require__(4729);
+const node_fs_1 = __importDefault(__nccwpck_require__(7561));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         const issues = yield (0, utils_1.getIssues)();
@@ -36,7 +40,7 @@ function run() {
 | --- | --- |
 ${table}
 `;
-        console.log(md);
+        node_fs_1.default.writeFileSync('README.md', md);
     });
 }
 run();
@@ -29107,6 +29111,14 @@ module.exports = require("net");
 
 "use strict";
 module.exports = require("node:events");
+
+/***/ }),
+
+/***/ 7561:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs");
 
 /***/ }),
 
