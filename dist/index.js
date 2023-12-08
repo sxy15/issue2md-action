@@ -19,10 +19,24 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const utils_1 = __nccwpck_require__(4729);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const token = (0, utils_1.githubToken)();
-        console.log('token', token);
         const issues = yield (0, utils_1.getIssues)();
-        console.log('issues', issues);
+        const tableData = issues.map(issue => {
+            const { html_url, title, updated_at } = issue;
+            return {
+                html_url,
+                title,
+                updated_at
+            };
+        });
+        const table = tableData.map(item => {
+            return `| [${item.title}](${item.html_url}) | ${item.updated_at} |`;
+        }).join('\n');
+        const md = `# Issues
+                | title | updated_at |
+                | --- | --- |
+                ${table}
+                `;
+        console.log(md);
     });
 }
 run();
