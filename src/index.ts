@@ -1,6 +1,5 @@
-import { getIssues } from './utils'
+import { getIssues, pushCommit } from './utils'
 import fs from 'node:fs'
-import { execSync } from 'node:child_process'
 
 async function run() {
 
@@ -26,10 +25,7 @@ ${table}
 `
     fs.writeFileSync('README.md', md, {encoding: 'utf-8'})
 
-    execSync('git add .')
-    execSync('git commit -m "update readme"')
-    execSync('git push')
+    pushCommit()
 }
-
 
 run()

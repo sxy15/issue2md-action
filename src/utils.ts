@@ -1,5 +1,6 @@
 import * as action from '@actions/core'
 import * as github from '@actions/github'
+import { execSync } from 'node:child_process'
 
 export function githubToken() {
     return action.getInput('token')
@@ -17,4 +18,26 @@ export async function getIssues() {
     })
 
     return issues.data
+}
+
+export async function getOwner() {
+    const octokit = github.getOctokit(githubToken())
+
+    const { data } = await octokit.rest.users.getByUsername({
+        username: github.context.repo.owner
+    })
+
+    return {
+        name: data.name,
+        email: data.email
+    }
+}
+
+export async function pushCommit() {
+    const { name, email } = await getOwner()
+    execSync(`git config --global user.name "${name}"`)
+    execSync(`git config --global user.email "${email}"`)
+    execSync('git add .')
+    execSync('git commit -m "update readme"')
+    execSync('git push')
 }

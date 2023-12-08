@@ -32,9 +32,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getIssues = exports.githubToken = void 0;
+exports.pushCommit = exports.getOwner = exports.getIssues = exports.githubToken = void 0;
 const action = __importStar(require("@actions/core"));
 const github = __importStar(require("@actions/github"));
+const node_child_process_1 = require("node:child_process");
 function githubToken() {
     return action.getInput('token');
 }
@@ -47,3 +48,27 @@ function getIssues() {
     });
 }
 exports.getIssues = getIssues;
+function getOwner() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const octokit = github.getOctokit(githubToken());
+        const { data } = yield octokit.rest.users.getByUsername({
+            username: github.context.repo.owner
+        });
+        return {
+            name: data.name,
+            email: data.email
+        };
+    });
+}
+exports.getOwner = getOwner;
+function pushCommit() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { name, email } = yield getOwner();
+        (0, node_child_process_1.execSync)(`git config --global user.name "${name}"`);
+        (0, node_child_process_1.execSync)(`git config --global user.email "${email}"`);
+        (0, node_child_process_1.execSync)('git add .');
+        (0, node_child_process_1.execSync)('git commit -m "update readme"');
+        (0, node_child_process_1.execSync)('git push');
+    });
+}
+exports.pushCommit = pushCommit;

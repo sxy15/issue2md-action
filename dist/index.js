@@ -21,7 +21,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const utils_1 = __nccwpck_require__(4729);
 const node_fs_1 = __importDefault(__nccwpck_require__(7561));
-const node_child_process_1 = __nccwpck_require__(7718);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         const issues = yield (0, utils_1.getIssues)();
@@ -42,9 +41,7 @@ function run() {
 ${table}
 `;
         node_fs_1.default.writeFileSync('README.md', md, { encoding: 'utf-8' });
-        (0, node_child_process_1.execSync)('git add .');
-        (0, node_child_process_1.execSync)('git commit -m "update readme"');
-        (0, node_child_process_1.execSync)('git push');
+        (0, utils_1.pushCommit)();
     });
 }
 run();
@@ -90,9 +87,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getIssues = exports.githubToken = void 0;
+exports.pushCommit = exports.getOwner = exports.getIssues = exports.githubToken = void 0;
 const action = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
+const node_child_process_1 = __nccwpck_require__(7718);
 function githubToken() {
     return action.getInput('token');
 }
@@ -105,6 +103,30 @@ function getIssues() {
     });
 }
 exports.getIssues = getIssues;
+function getOwner() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const octokit = github.getOctokit(githubToken());
+        const { data } = yield octokit.rest.users.getByUsername({
+            username: github.context.repo.owner
+        });
+        return {
+            name: data.name,
+            email: data.email
+        };
+    });
+}
+exports.getOwner = getOwner;
+function pushCommit() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { name, email } = yield getOwner();
+        (0, node_child_process_1.execSync)(`git config --global user.name "${name}"`);
+        (0, node_child_process_1.execSync)(`git config --global user.email "${email}"`);
+        (0, node_child_process_1.execSync)('git add .');
+        (0, node_child_process_1.execSync)('git commit -m "update readme"');
+        (0, node_child_process_1.execSync)('git push');
+    });
+}
+exports.pushCommit = pushCommit;
 
 
 /***/ }),
