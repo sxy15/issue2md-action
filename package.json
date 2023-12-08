@@ -2,25 +2,16 @@
   "name": "issue2md-action",
   "version": "1.0.0",
   "description": "issue2md-action",
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs"
-    }
-  },
-  "main": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "main": "dist/index.js",
   "scripts": {
-    "build": "npx unbuild"
+    "build": "tsc && ncc build"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "unbuild": "^2.0.0"
+    "@vercel/ncc": "^0.38.1",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "@actions/core": "^1.10.1",
