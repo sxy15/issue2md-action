@@ -2,6 +2,10 @@ name: 'issue2md'
 author: 'sxy15'
 description: 'issue2md'
 
+branding:
+  icon: 'battery'
+  color: 'blue'
+
 on:
   issues:
     types: [opened, edited, closed, reopened]
