@@ -21,6 +21,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const utils_1 = __nccwpck_require__(4729);
 const node_fs_1 = __importDefault(__nccwpck_require__(7561));
+const node_child_process_1 = __nccwpck_require__(7718);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         const issues = yield (0, utils_1.getIssues)();
@@ -40,7 +41,10 @@ function run() {
 | --- | --- |
 ${table}
 `;
-        node_fs_1.default.writeFileSync('README.md', md);
+        node_fs_1.default.writeFileSync('README.md', md, { encoding: 'utf-8' });
+        (0, node_child_process_1.execSync)('git add .');
+        (0, node_child_process_1.execSync)('git commit -m "update readme"');
+        (0, node_child_process_1.execSync)('git push');
     });
 }
 run();
@@ -29103,6 +29107,14 @@ module.exports = require("https");
 
 "use strict";
 module.exports = require("net");
+
+/***/ }),
+
+/***/ 7718:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:child_process");
 
 /***/ }),
 
