@@ -16,6 +16,10 @@ inputs:
   token:
     description: 'GitHub token'
     required: true
+  filename:
+    description: 'Filename'
+    required: false
+    default: 'README.md'
 
 runs:
   using: 'node16'
