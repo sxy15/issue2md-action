@@ -27,5 +27,5 @@ jobs:
             - uses: ./
               with:
                 token: ${{ secrets.GITHUB_TOKEN }}
-                filename: 'issue.md'
+                filename: 'issue'
                 title: 'issue test'
