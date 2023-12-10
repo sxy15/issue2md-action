@@ -40,7 +40,7 @@ function run() {
 | --- | --- |
 ${table}
 `;
-        node_fs_1.default.writeFileSync('${getFilename()}.md', md, { encoding: 'utf-8' });
+        node_fs_1.default.writeFileSync(`${(0, utils_1.getFilename)()}.md`, md, { encoding: 'utf-8' });
         (0, utils_1.pushCommit)();
     });
 }

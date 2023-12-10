@@ -23,7 +23,7 @@ async function run() {
 | --- | --- |
 ${table}
 `
-    fs.writeFileSync('${getFilename()}.md', md, {encoding: 'utf-8'})
+    fs.writeFileSync(`${getFilename()}.md`, md, {encoding: 'utf-8'})
 
     pushCommit()
 }
