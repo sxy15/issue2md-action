@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.pushCommit = exports.getOwner = exports.getIssues = exports.githubToken = void 0;
+exports.pushCommit = exports.getOwner = exports.getIssues = exports.getTitle = exports.getFilename = exports.githubToken = void 0;
 const action = __importStar(require("@actions/core"));
 const github = __importStar(require("@actions/github"));
 const node_child_process_1 = require("node:child_process");
@@ -40,6 +40,14 @@ function githubToken() {
     return action.getInput('token');
 }
 exports.githubToken = githubToken;
+function getFilename() {
+    return action.getInput('filename');
+}
+exports.getFilename = getFilename;
+function getTitle() {
+    return action.getInput('title');
+}
+exports.getTitle = getTitle;
 function getIssues() {
     return __awaiter(this, void 0, void 0, function* () {
         const octokit = github.getOctokit(githubToken());

@@ -35,12 +35,12 @@ function run() {
         const table = tableData.map(item => {
             return `| [${item.title}](${item.html_url}) | ${item.updated_at} |`;
         }).join('\n');
-        const md = `# Issues
+        const md = `# ${(0, utils_1.getTitle)()}
 | title | updated_at |
 | --- | --- |
 ${table}
 `;
-        node_fs_1.default.writeFileSync('README.md', md, { encoding: 'utf-8' });
+        node_fs_1.default.writeFileSync('${getFilename()}.md', md, { encoding: 'utf-8' });
         (0, utils_1.pushCommit)();
     });
 }
@@ -87,7 +87,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.pushCommit = exports.getOwner = exports.getIssues = exports.githubToken = void 0;
+exports.pushCommit = exports.getOwner = exports.getIssues = exports.getTitle = exports.getFilename = exports.githubToken = void 0;
 const action = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const node_child_process_1 = __nccwpck_require__(7718);
@@ -95,6 +95,14 @@ function githubToken() {
     return action.getInput('token');
 }
 exports.githubToken = githubToken;
+function getFilename() {
+    return action.getInput('filename');
+}
+exports.getFilename = getFilename;
+function getTitle() {
+    return action.getInput('title');
+}
+exports.getTitle = getTitle;
 function getIssues() {
     return __awaiter(this, void 0, void 0, function* () {
         const octokit = github.getOctokit(githubToken());

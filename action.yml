@@ -19,7 +19,11 @@ inputs:
   filename:
     description: 'Filename'
     required: false
-    default: 'README.md'
+    default: 'README'
+  title:
+    description: 'readme Title'
+    required: false
+    default: 'Issues'
 
 runs:
   using: 'node16'

@@ -6,6 +6,14 @@ export function githubToken() {
     return action.getInput('token')
 }
 
+export function getFilename() {
+    return action.getInput('filename')
+}
+
+export function getTitle() {
+    return action.getInput('title')
+}
+
 export async function getIssues() {
     const octokit = github.getOctokit(githubToken())
 

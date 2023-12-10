@@ -1,4 +1,4 @@
-import { getIssues, pushCommit } from './utils'
+import { getIssues, pushCommit, getTitle, getFilename } from './utils'
 import fs from 'node:fs'
 
 async function run() {
@@ -18,12 +18,12 @@ async function run() {
         return `| [${item.title}](${item.html_url}) | ${item.updated_at} |`
     }).join('\n')
 
-    const md = `# Issues
+    const md = `# ${getTitle()}
 | title | updated_at |
 | --- | --- |
 ${table}
 `
-    fs.writeFileSync('README.md', md, {encoding: 'utf-8'})
+    fs.writeFileSync('${getFilename()}.md', md, {encoding: 'utf-8'})
 
     pushCommit()
 }
