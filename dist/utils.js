@@ -62,6 +62,7 @@ function getOwner() {
         const { data } = yield octokit.rest.users.getByUsername({
             username: github.context.repo.owner
         });
+        console.log('data', data);
         return {
             name: data.name,
             email: data.email

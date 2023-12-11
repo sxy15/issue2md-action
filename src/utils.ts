@@ -35,6 +35,8 @@ export async function getOwner() {
         username: github.context.repo.owner
     })
 
+    console.log('data', data)
+
     return {
         name: data.name,
         email: data.email
